@@ -77,8 +77,18 @@
 [Materials]
   [./mat]
     type = GenericConstantMaterial
-    prop_names  = 'M kappa_c'
-    prop_values = '1.0 0.5'
+    prop_names  = 'kappa_c'
+    prop_values = '0.5'
+  [../]
+  [./mob]
+    type = DerivativeParsedMaterial
+    args = c
+    f_name = M
+    constant_names = 'c_cr L W gamma nu'
+    constant_expressions = '0.1 0.03 0.0001 0.2 0.88'
+    function = 'L^(-gamma/nu) * (-(c-c_cr) * if((c-c_cr) < 0,1,0) + W * exp(-abs(c-c_cr)/2/W))'
+    derivative_order = 1
+    output = exodus
   [../]
   [./free_energy]
     type = DerivativeParsedMaterial
@@ -123,9 +133,16 @@
   l_tol = 1e-4
   nl_max_its = 20
   nl_rel_tol = 1e-9
+  end_time = 100.0
 
-  dt = 2.0
-  end_time = 20.0
+  [./TimeStepper]
+    # Turn on time stepping
+    type = IterationAdaptiveDT
+    dt = 2.0
+    cutback_factor = 0.8
+    growth_factor = 1.5
+    optimal_iterations = 7
+  [../]
 []
 
 [Outputs]
