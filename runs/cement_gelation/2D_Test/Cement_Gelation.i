@@ -1,13 +1,8 @@
-#
-# Example problem showing how to use the DerivativeParsedMaterial with SplitCHParsed.
-# The free energy is identical to that from SplitCHMath, f_bulk = 1/4*(1-c)^2*(1+c)^2.
-#
-
 [Mesh]
   type = GeneratedMesh
   dim = 2 #######CHANGE FOR 3D
-  nx = 64
-  ny = 64
+  nx = 128
+  ny = 128
   #nz = 64 #######UNCOMMENT FOR 3D
   xmax = 50
   ymax = 50
@@ -23,6 +18,11 @@
 
 [AuxVariables]
   [./local_energy]
+    order = CONSTANT
+    family = MONOMIAL
+  [../]
+
+  [./first_invariant]
     order = CONSTANT
     family = MONOMIAL
   [../]
@@ -152,13 +152,38 @@
   [../]
 []
 
+[MultiApps]
+  [./mechanics]
+    type = TransientMultiApp
+    input_files = ./runs/cement_gelation/20170924_1/Cement_Mechanics.i
+    execute_on = 'timestep_end'
+  [../]
+[]
+
+[Transfers]
+  [./phase_transfer]
+    type = MultiAppMeshFunctionTransfer
+    direction = to_multiapp
+    multi_app = mechanics
+    source_variable = c
+    variable = c
+  [../]
+  [./from_sub]
+    type = MultiAppMeshFunctionTransfer
+    direction = from_multiapp
+    multi_app = mechanics
+    source_variable = first_invariant
+    variable = first_invariant
+  [../]
+[]
+
 [Executioner]
   type = Transient
   solve_type = NEWTON
   scheme = bdf2
 
   petsc_options_iname = '-pc_type -sub_pc_type'
-  petsc_options_value = 'asm      lu'
+  petsc_options_value = 'asm lu'
 
   l_max_its = 15
   l_tol = 1e-3
@@ -178,6 +203,6 @@
 
 [Outputs]
   exodus = true
-  csv = true
+  csv = false
   print_perf_log = true
 []

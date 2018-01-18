@@ -4,6 +4,21 @@
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
 
+// Custom Includes:
+#include "ReactiveSource.h"
+#include "AllenCahnColloid.h"
+#include "AllenCahnRes.h"
+#include "ACInterfaceColloid.h"
+#include "SplitCHCResColloid.h"
+#include "SplitCHParsedColloid.h"
+#include "SplitCHBaseColloid.h"
+#include "ReactiveSourceODE.h"
+#include "ElementAverageAux.h"
+#include "ElementAverage.h"
+#include "DiffusiveFluxODE.h"
+#include "MechStrainEnergyAux.h"
+#include "CalcConcAux.h"
+
 template <>
 InputParameters
 validParams<tigerApp>()
@@ -43,9 +58,23 @@ tigerApp__registerObjects(Factory & factory)
 {
   tigerApp::registerObjects(factory);
 }
+
 void
 tigerApp::registerObjects(Factory & factory)
 {
+  registerKernel(ReactiveSource);
+  registerKernel(ACInterfaceColloid);
+  registerKernel(AllenCahnColloid);
+  registerKernel(AllenCahnRes);
+  registerKernel(SplitCHCResColloid);
+  registerKernel(SplitCHParsedColloid);
+  registerKernel(SplitCHBaseColloid);
+  registerScalarKernel(ReactiveSourceODE);
+  registerScalarKernel(DiffusiveFluxODE);
+  registerAuxKernel(MechStrainEnergyAux);
+  registerAuxKernel(ElementAverageAux);
+  registerAuxKernel(CalcConcAux);
+  registerScalarKernel(ElementAverage);
 }
 
 // External entry point for dynamic syntax association

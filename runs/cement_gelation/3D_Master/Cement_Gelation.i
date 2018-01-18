@@ -5,13 +5,13 @@
 
 [Mesh]
   type = GeneratedMesh
-  dim = 2 #######CHANGE FOR 3D
-  nx = 64
-  ny = 64
-  #nz = 64 #######UNCOMMENT FOR 3D
+  dim = 3 #######CHANGE FOR 3D
+  nx = 128
+  ny = 128
+  nz = 128 #######UNCOMMENT FOR 3D
   xmax = 50
   ymax = 50
-  #zmax = 50 #######UNCOMMENT FOR 3D
+  zmax = 50 #######UNCOMMENT FOR 3D
 []
 
 [Variables]
@@ -94,7 +94,7 @@
 [BCs]
   [./Periodic]
     [./all]
-      auto_direction = 'x y' #######ADD Z FOR 3D
+      auto_direction = 'x y z' #######ADD Z FOR 3D
     [../]
   [../]
 []
