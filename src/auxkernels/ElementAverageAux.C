@@ -25,7 +25,7 @@ validParams<ElementAverageAux>()
 
 ElementAverageAux::ElementAverageAux(const InputParameters & parameters)
   : AuxScalarKernel(parameters),
-  _integral_uo(getUserObject<ElementAverageValue>("user_object"))
+  _integral_uo(getUserObject<ElementAverageValueConst>("user_object"))
 {
 }
 
