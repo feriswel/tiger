@@ -34,6 +34,7 @@ protected:
   virtual Real computeQpJacobian();
   virtual Real computeQpOffDiagJacobian(unsigned int jvar);
 
+private:
   const unsigned int _nvar;
   const MaterialPropertyName _mob_name;
   const MaterialProperty<Real> & _L;

@@ -13,14 +13,15 @@ validParams<AllenCahnRes>()
   InputParameters params = validParams<Kernel>();
   params.addClassDescription("Allen-Cahn Kernel that uses a DerivativeMaterial Free Energy");
   params.addParam<MaterialPropertyName>("mob_name", "L", "The reaction rate coefficient used with the kernel");
-  params.addCoupledVar("args", "Vector of arguments of the mobility");
+  params.addCoupledVar("args", "Vector of additional arguments in defining the reaction rate");
   return params;
 }
 
 AllenCahnRes::AllenCahnRes(const InputParameters & parameters)
   : DerivativeMaterialInterface<JvarMapKernelInterface<Kernel>>(parameters),
     _nvar(_coupled_moose_vars.size()),
-    _L(getMaterialProperty<Real>("mob_name"))
+    _L(getMaterialProperty<Real>("mob_name")),
+    _dLdarg(_nvar)
 {
 
   // Iterate over all coupled variables

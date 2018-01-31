@@ -12,36 +12,38 @@
 /*            See COPYRIGHT for full restrictions               */
 /****************************************************************/
 
-#ifndef ELEMENTAVERAGEAUX_H
-#define ELEMENTAVERAGEAUX_H
+#ifndef ELEMENTAVERAGEVALUECONST_H
+#define ELEMENTAVERAGEVALUECONST_H
 
-#include "AuxScalarKernel.h"
-#include "ElementAverageValueConst.h"
+#include "ElementIntegralVariablePostprocessor.h"
 
 // Forward Declarations
-class ElementAverageAux;
+class ElementAverageValueConst;
 
 template <>
-InputParameters validParams<ElementAverageAux>();
+InputParameters validParams<ElementAverageValueConst>();
 
 /**
- * Constant auxiliary value
+ * This postprocessor computes a volume integral of the specified variable.
+ *
+ * Note that specializations of this integral are possible by deriving from this
+ * class and overriding computeQpIntegral().
  */
-class ElementAverageAux : public AuxScalarKernel
+class ElementAverageValueConst : public ElementIntegralVariablePostprocessor
 {
 public:
-  /**
-   * Factory constructor, takes parameters so that all derived classes can be built using the same
-   * constructor.
-   */
-  ElementAverageAux(const InputParameters & parameters);
+  ElementAverageValueConst(const InputParameters & parameters);
+
+  virtual void initialize() override;
+  virtual void execute() override;
+  virtual Real getValue() override;
+  virtual void threadJoin(const UserObject & y) override;
+
+  Real retrieveValue() const;
 
 protected:
-  virtual Real computeValue() override;
-
-  /// The value being set for the current node/element
-
-  const ElementAverageValueConst & _integral_uo;
+  Real _volume;
+  Real _integral;
 };
 
-#endif // CONSTANTAUX_H
+#endif

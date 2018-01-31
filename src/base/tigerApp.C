@@ -15,6 +15,7 @@
 #include "ReactiveSourceODE.h"
 #include "ElementAverageAux.h"
 #include "ElementAverage.h"
+#include "ElementAverageValueConst.h"
 #include "DiffusiveFluxODE.h"
 #include "MechStrainEnergyAux.h"
 #include "CalcConcAux.h"
@@ -75,6 +76,7 @@ tigerApp::registerObjects(Factory & factory)
   registerAuxKernel(ElementAverageAux);
   registerAuxKernel(CalcConcAux);
   registerScalarKernel(ElementAverage);
+  registerPostprocessor(ElementAverageValueConst);
 }
 
 // External entry point for dynamic syntax association
