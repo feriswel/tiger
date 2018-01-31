@@ -35,5 +35,5 @@ ElementAverageAux::computeValue()
   // Real out;
 
   // out = _integral_uo.getValue();
-  return _integral_uo.getValue();
+  return _integral_uo.retrieveValue();
 }
